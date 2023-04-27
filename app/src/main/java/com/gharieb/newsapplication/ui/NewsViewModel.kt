@@ -15,11 +15,11 @@ class NewsViewModel(
 ): ViewModel() {
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    val breakingNewsPage = 1
+    var breakingNewsPage = 1
     var breakingNewsRespone : NewsResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    val searchNewsPage = 1
+    var searchNewsPage = 1
     var searchNewsRespone : NewsResponse? = null
 
     init {
@@ -42,7 +42,15 @@ class NewsViewModel(
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>):Resource<NewsResponse>{
         if(response.isSuccessful){
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                breakingNewsPage++
+                if (breakingNewsRespone == null){
+                    breakingNewsRespone == resultResponse
+                }else{
+                    val oldArticles = breakingNewsRespone?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                }
+                return Resource.Success(breakingNewsRespone ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -51,7 +59,15 @@ class NewsViewModel(
     private fun handleSearchNewsResponse(response: Response<NewsResponse>):Resource<NewsResponse>{
         if(response.isSuccessful){
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                searchNewsPage+2
+                if (searchNewsRespone == null){
+                    searchNewsRespone == resultResponse
+                }else{
+                    val oldArticles = searchNewsRespone?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                }
+                return Resource.Success(searchNewsRespone ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
