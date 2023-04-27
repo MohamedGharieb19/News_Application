@@ -3,7 +3,10 @@
     <style name="Base.Theme.NewsApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
     </style>
 
     <style name="Theme.NewsApplication" parent="Base.Theme.NewsApplication" />
+
 </resources>
